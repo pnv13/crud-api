@@ -1,3 +1,4 @@
+import { User } from './../types/Users';
 import { NewUser } from 'types/Users';
 import { v4 as uuidv4 } from 'uuid';
 import { users } from '../data/users';
@@ -15,7 +16,7 @@ export const findById = (id: string) => {
   });
 };
 
-export const createUser = (user: NewUser) => {
+export const createUser = (user: NewUser): Promise<User> => {
   return new Promise((resolve, reject) => {
     const newUser = { id: uuidv4(), ...user };
     users.push(newUser);
