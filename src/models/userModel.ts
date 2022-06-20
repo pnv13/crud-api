@@ -9,7 +9,7 @@ export const findAll = () => {
   });
 };
 
-export const findById = (id: string) => {
+export const findById = (id: string): Promise<User | undefined> => {
   return new Promise((resolve, reject) => {
     const user = users.find((userData) => userData.id === id);
     resolve(user);
@@ -21,5 +21,13 @@ export const createUser = (user: NewUser): Promise<User> => {
     const newUser = { id: uuidv4(), ...user };
     users.push(newUser);
     resolve(newUser);
+  });
+};
+
+export const update = (id: string, userData: NewUser) => {
+  return new Promise((resolve, reject) => {
+    const index = users.findIndex((user) => user.id === id);
+    users[index] = { id, ...userData };
+    resolve(users[index]);
   });
 };
