@@ -31,3 +31,11 @@ export const update = (id: string, userData: NewUser) => {
     resolve(users[index]);
   });
 };
+
+export const removeUser = (id: string) => {
+  return new Promise((resolve, reject) => {
+    const index = users.findIndex((user) => user.id === id);
+    users.splice(index, 1);
+    resolve(id);
+  });
+}

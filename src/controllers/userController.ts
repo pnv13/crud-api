@@ -1,6 +1,6 @@
 import { getUserData } from './../utils';
 import { NewUser } from 'types/Users';
-import { createUser, findById, update } from './../models/userModel';
+import { createUser, findById, removeUser, update } from './../models/userModel';
 import { findAll } from '../models/userModel';
 import http from 'http';
 import { validate as uuidValidate } from 'uuid';
@@ -90,6 +90,31 @@ export const updateUser = async (
 
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(updateUser));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteUser = async (
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+  id: string,
+) => {
+  try {
+    const user = await findById(id);
+
+    if (!user) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'User Not Found' }));
+    } else if (!uuidValidate(id)) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Invalid ID' }));
+    } else {
+      await removeUser(id);
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'User successful deleted' }));
     }
   } catch (error) {
     console.log(error);
